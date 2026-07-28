@@ -40,5 +40,10 @@ htmlcov/
 .tox/
 .nox/
 
+# Build artifacts
+build/
+dist/
+*.spec
+
 # Project-specific
 *.egg-info/

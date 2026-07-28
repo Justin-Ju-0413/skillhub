@@ -38,10 +38,24 @@
 
 ### 安装
 
+**方式一：单文件 EXE（推荐 Windows 用户）**
+
+直接从 [Releases](https://github.com/Justin-Ju-0413/skillhub/releases) 下载 `skillhub.exe`，放到 PATH 里即可使用，无需 Python 环境。
+
+**方式二：pip 安装**
+
 ```bash
-git clone https://github.com/yourusername/skillhub.git
+git clone https://github.com/Justin-Ju-0413/skillhub.git
 cd skillhub
 pip install -e .
+```
+
+**方式三：源码构建 EXE**
+
+```bash
+pip install pyinstaller
+pyinstaller --clean skillhub.spec
+# 产物在 dist/skillhub.exe
 ```
 
 ### 初始化
