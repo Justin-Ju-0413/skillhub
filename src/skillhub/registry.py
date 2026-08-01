@@ -57,6 +57,7 @@ def get_db() -> Iterator[sqlite3.Connection]:
     conn = sqlite3.connect(str(db_path))
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
+    conn.executescript(SCHEMA)
     try:
         yield conn
         conn.commit()

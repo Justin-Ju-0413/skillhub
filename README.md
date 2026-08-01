@@ -38,9 +38,9 @@
 
 ### 安装
 
-**方式一：单文件 EXE（推荐 Windows 用户）**
+**方式一：单文件 EXE（仅限 Release 附件明确提供时）**
 
-直接从 [Releases](https://github.com/Justin-Ju-0413/skillhub/releases) 下载 `skillhub.exe`，放到 PATH 里即可使用，无需 Python 环境。
+从 [Releases](https://github.com/Justin-Ju-0413/skillhub/releases) 下载 `skillhub.exe` 和同版本 SHA-256 文件，校验后放到 PATH。若 Release 标记为 source-only，请使用 pip 安装，不要从非官方网盘获取 EXE。
 
 **方式二：pip 安装**
 
@@ -141,6 +141,16 @@ class MyPlatformAdapter(BaseAdapter):
 - **v0.3** 🔜 Cherry Studio 适配器 + 格式翻译
 - **v0.4** 🔜 VS Code / GitHub Copilot 适配器
 - **v0.5** 🔜 GUI + 自动同步
+
+## 验证与回退
+
+```bash
+python -m unittest discover -s tests -v
+skillhub --help
+skillhub doctor
+```
+
+当前 Tier 1 通过 Windows junction 或 macOS/Linux symlink 同步。同步前会保留非 Skillhub 管理的真实目录，不会覆盖。回退时安装上一版源码包；`~/.skillhub/skills` 和 `registry.db` 是用户数据，卸载时不应删除。
 
 ## 📄 许可证
 
