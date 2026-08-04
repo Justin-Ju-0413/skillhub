@@ -1,28 +1,35 @@
+<p align="center">
+  <img src=".github/persona-banner.svg" width="100%" alt="skillhub — One skill registry for every agent platform">
+</p>
+
 # Skillhub
 
-> 本地统一技能集线器 — 装一次技能，所有 AI agent 平台都能用
+**One skill registry for every agent platform.**
+**一处安装,处处可用。**
 
-**One skill to rule them all.** Skillhub 是一个本地的技能/工具中央注册表，让你在一台机器上安装一次技能，就能在所有 AI agent 平台（Claude Code、WorkBuddy、OpenAI Codex、Cherry Studio……）之间共享使用。
+A local central registry for skills and tools — install a skill once on one machine, share it across every AI agent platform (Claude Code, WorkBuddy, OpenAI Codex, Cherry Studio…).
 
-## ✨ 特性
+本地技能/工具中央注册表:在一台机器上安装一次,在所有 AI agent 平台之间共享。
 
-- 🎯 **单一真源** — 技能的规范副本只存一份，各平台通过 symlink/junction 共享
-- 🔌 **适配器架构** — 新增平台支持只需写一个 Python 类
-- 🔒 **安全无侵入** — 用命名空间前缀管理 MCP 配置，绝不碰用户手动设置的内容
-- 🩺 **健康检查** — `skillhub doctor` 检测断裂链接，支持自动修复
-- 📊 **状态追踪** — SQLite 注册表跟踪每个技能在每个平台的同步状态
-- 💻 **跨平台** — 支持 Windows（junction）、macOS、Linux（symlink）
+## Features / 特性
 
-## 🏗️ 架构
+- **Single source of truth / 单一真源** — 技能规范副本只存一份,各平台通过 symlink/junction 共享
+- **Adapter architecture / 适配器架构** — 新增平台支持只需写一个 Python 类
+- **Non-invasive / 安全无侵入** — 用命名空间前缀管理 MCP 配置,不触碰用户手动设置
+- **Health check / 健康检查** — `skillhub doctor` 检测断裂链接,支持自动修复
+- **State tracking / 状态追踪** — SQLite 注册表跟踪每个技能在每个平台的同步状态
+- **Cross-platform / 跨平台** — Windows(junction)、macOS、Linux(symlink)
 
-### 两层模型
+## Architecture / 架构
+
+### Two-tier model / 两层模型
 
 | 层级 | 内容 | 同步方式 |
 |---|---|---|
 | **Tier 1: SKILL.md 技能** | 提示词驱动的技能 | 目录 junction/symlink |
-| **Tier 2: MCP 服务器** | 可调用工具服务器 | 配置文件注入（`skillhub:` 前缀命名空间） |
+| **Tier 2: MCP 服务器** | 可调用工具服务器 | 配置文件注入(`skillhub:` 前缀命名空间) |
 
-### 支持的平台
+### Supported platforms / 支持的平台
 
 | 平台 | Tier 1 (SKILL.md) | Tier 2 (MCP) |
 |---|:---:|:---:|
@@ -34,15 +41,15 @@
 | **LM Studio** | — | 🔜 |
 | **VS Code + Copilot** | — | 🔜 |
 
-## 🚀 快速开始
+## Quick start / 快速开始
 
 ### 安装
 
-**方式一：单文件 EXE（仅限 Release 附件明确提供时）**
+**方式一:单文件 EXE(仅限 Release 附件明确提供时)**
 
-从 [Releases](https://github.com/Justin-Ju-0413/skillhub/releases) 下载 `skillhub.exe` 和同版本 SHA-256 文件，校验后放到 PATH。若 Release 标记为 source-only，请使用 pip 安装，不要从非官方网盘获取 EXE。
+从 [Releases](https://github.com/Justin-Ju-0413/skillhub/releases) 下载 `skillhub.exe` 和同版本 SHA-256 文件,校验后放入 PATH。若 Release 标记为 source-only,请使用 pip 安装,不要从非官方网盘获取 EXE。
 
-**方式二：pip 安装**
+**方式二:pip 安装**
 
 ```bash
 git clone https://github.com/Justin-Ju-0413/skillhub.git
@@ -50,7 +57,7 @@ cd skillhub
 pip install -e .
 ```
 
-**方式三：源码构建 EXE**
+**方式三:源码构建 EXE**
 
 ```bash
 pip install pyinstaller
@@ -58,38 +65,26 @@ pyinstaller --clean skillhub.spec
 # 产物在 dist/skillhub.exe
 ```
 
-### 初始化
+### 初始化与同步
 
 ```bash
-skillhub init
+skillhub init                    # 检测本机 agent 平台,导入现有技能
+skillhub sync                    # 同步到所有启用平台
+skillhub list                    # 列出所有已安装技能
+skillhub platforms               # 查看平台状态
+skillhub doctor                  # 健康检查
+skillhub doctor --fix            # 自动修复
 ```
 
-自动检测本机安装的 agent 平台，导入现有的技能到中央注册表。
-
-### 同步到所有平台
-
-```bash
-skillhub sync
-```
-
-### 查看状态
-
-```bash
-skillhub list              # 列出所有已安装技能
-skillhub platforms         # 查看平台状态
-skillhub doctor            # 健康检查
-skillhub doctor --fix      # 自动修复问题
-```
-
-## 📖 命令手册
+## Command reference / 命令手册
 
 | 命令 | 说明 |
 |---|---|
-| `skillhub init` | 初始化注册表，检测平台，导入现有技能 |
+| `skillhub init` | 初始化注册表,检测平台,导入现有技能 |
 | `skillhub list` | 列出所有已安装技能 |
 | `skillhub sync` | 同步技能到所有启用的平台 |
 | `skillhub sync --platform <name>` | 只同步指定平台 |
-| `skillhub sync --dry-run` | 试运行，不做实际修改 |
+| `skillhub sync --dry-run` | 试运行,不做实际修改 |
 | `skillhub doctor` | 检查技能同步状态 |
 | `skillhub doctor --fix` | 自动修复断裂的链接 |
 | `skillhub platforms` | 列出检测到的平台 |
@@ -97,7 +92,7 @@ skillhub doctor --fix      # 自动修复问题
 | `skillhub platforms disable <name>` | 禁用平台 |
 | `skillhub import --from <platform>` | 从指定平台批量导入技能 |
 
-## 🧩 架构说明
+## Layout / 目录结构
 
 ```
 ~/.skillhub/
@@ -114,7 +109,7 @@ skillhub doctor --fix      # 自动修复问题
 
 ### 添加新平台适配器
 
-在 `src/skillhub/adapters/` 下新建一个 Python 文件，继承 `BaseAdapter`：
+在 `src/skillhub/adapters/` 下新建一个 Python 文件,继承 `BaseAdapter`:
 
 ```python
 from .base import BaseAdapter
@@ -134,15 +129,15 @@ class MyPlatformAdapter(BaseAdapter):
 
 自动被发现并注册。
 
-## 🛣️ 路线图
+## Roadmap / 路线图
 
-- **v0.1** ✅ Tier 1 SKILL.md 技能共享（3 个平台）
+- **v0.1** ✅ Tier 1 SKILL.md 技能共享(3 个平台)
 - **v0.2** 🔜 Tier 2 MCP 服务器统一管理
 - **v0.3** 🔜 Cherry Studio 适配器 + 格式翻译
 - **v0.4** 🔜 VS Code / GitHub Copilot 适配器
 - **v0.5** 🔜 GUI + 自动同步
 
-## 验证与回退
+## Verification & rollback / 验证与回退
 
 ```bash
 python -m unittest discover -s tests -v
@@ -150,8 +145,8 @@ skillhub --help
 skillhub doctor
 ```
 
-当前 Tier 1 通过 Windows junction 或 macOS/Linux symlink 同步。同步前会保留非 Skillhub 管理的真实目录，不会覆盖。回退时安装上一版源码包；`~/.skillhub/skills` 和 `registry.db` 是用户数据，卸载时不应删除。
+当前 Tier 1 通过 Windows junction 或 macOS/Linux symlink 同步。同步前会保留非 Skillhub 管理的真实目录,不会覆盖。回退时安装上一版源码包;`~/.skillhub/skills` 和 `registry.db` 是用户数据,卸载时不应删除。
 
-## 📄 许可证
+## License
 
 MIT License
